@@ -1,4 +1,4 @@
-# Two_moving_average_qrs_detector
+# A two moving average qrs detector with optional temporal correction
 
 * Elgendi, Mohamed; Eskofier, Björn; Dokos, Socrates; Abbott, Derek; Amaral, Luís A. Nunes. (2014): Revisiting QRS Detection Methodologies for Portable, Wearable, Battery-Operated, and Wireless ECG Systems. In PLoS ONE 9 (1), e84018. DOI: 10.1371/journal.pone.0084018.
 * Elgendi, Mohamed; Jonkman, Mirjam; Boer, Friso de (2009): Improved QRS Detection Algorithm using Dynamic Thresholds. In International Journal of Hybrid Information Technology 2, pp. 65–80.
