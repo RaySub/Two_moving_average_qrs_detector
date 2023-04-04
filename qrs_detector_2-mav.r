@@ -18,12 +18,12 @@ elgendi <- function(signal, srate = 360L, lowcut_f1 = 8L, highcut_f2 = 21L, filt
     # srate_ref = Integer. Its value (360 Hz) should not be changed. 
          # 360 Hz is the frequency used in the three papers by Elgendi M. 
          # Remember that the optimized values for qrs_win1 and beat_win2 are valid for srate_ref = 360 Hz
-    # offset:Scalar. Threshold offset beta (see Gradl & Elgendi 2015)
+    # offset:Scalar. Threshold offset beta (Gradl & Elgendi 2015)
     # offset_win3: Integer (seconds). No optimized value. 
          # Gradl & Elgendi 2015 used 4s which was the maximum value for real-time calculations (embedded device)
     # slackness_red: Logical. slackness reduction as in Gradl & Elgendi 2015
-    # slackness_win1: Scalar (seconds). Windows T1 for temporal correction (see Gradl & Elgendi 2015)
-    # slackness_win2: Scalar (seconds). Windows T2 for temporal correction (see Gradl & Elgendi 2015)
+    # slackness_win1: Scalar (seconds). Windows T1 for temporal correction (Gradl & Elgendi 2015)
+    # slackness_win2: Scalar (seconds). Windows T2 for temporal correction (Gradl & Elgendi 2015)
     # refractory_period: Scalar (seconds). Defaults to 300 ms (Porr & Powell 2019)
 
     nyquist_freq <- 0.5 * srate
