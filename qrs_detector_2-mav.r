@@ -122,7 +122,7 @@ points(signal_squared ~ loc.sr, data = ad100_qrs0, col = "#036830", pch = 3)
 
 library(plotly)
 plot_ly(ad100_qrs, x = ~idx, y = ~signal, type = "scatter", linetype = 1, mode = "lines", showlegend = FALSE) %>% 
-layout(xaxis = list(title = "sample (260 Hz)"),
+layout(xaxis = list(title = "sample (360 Hz)"),
 yaxis = list(title = "unfiltered signal (mV)"),
 legend = list(orientation = 'h')) %>%
 add_markers(x = ~loc[!is.na(loc)], y = ~signal[!is.na(loc)], inherit = FALSE, name = "approximate location") %>% 
