@@ -1,7 +1,7 @@
 library(data.table)
 library(gsignal)
 
-
+# ============================= the main function ============================================================
 elgendi <- function(signal, srate = 360L, lowcut_f1 = 8L, highcut_f2 = 21L, filter_order = 3L, qrs_win1 = 35, 
     beat_win2 = 220, srate_ref = 360L, offset = 0.08, offset_win3 = 30L,
     slackness_red = FALSE, slackness_win1 = 0.200, slackness_win2 = 0.140,
@@ -101,7 +101,10 @@ elgendi <- function(signal, srate = 360L, lowcut_f1 = 8L, highcut_f2 = 21L, filt
     height, loc.sr = if (exists("loc.sr")) loc.sr)
     dtb
 }
-
+# --------------------------------------------------------------------------------------------------------
+                      
+# ==================== a (static) diagnostic plot ========================================================                     
+                      
 ad100 <- fread("100.csv")
 ad100
 
@@ -113,13 +116,15 @@ ad100_qrs0 <- ad100_qrs[1000:2200]
 ad100_qrs0[!is.na(block.clean), block.clean := 1]
 ad100_qrs0[is.na(block.clean), block.clean := 0]
 
-plot(signal_squared ~ idx, data = ad100_qrs0, type = "l", xlab = "sample (260 Hz)")
+plot(signal_squared ~ idx, data = ad100_qrs0, type = "l", xlab = "sample (360 Hz)")
 lines(mwa_qrs ~ idx, data = ad100_qrs0, type = "l", col = 2) 
 lines(mwa_beat ~ idx, data = ad100_qrs0, type = "l", col = 3) 
 lines(I(0.2 * block.clean) ~ idx, data = ad100_qrs0, type = "l", col = 5) 
 points(signal_squared ~ loc, data = ad100_qrs0, col = "darkred")
 points(signal_squared ~ loc.sr, data = ad100_qrs0, col = "#036830", pch = 3)
+# --------------------------------------------------------------------------------------------------------
 
+# ==================== a (dynamic) diagnostic plot =======================================================  
 library(plotly)
 plot_ly(ad100_qrs, x = ~idx, y = ~signal, type = "scatter", linetype = 1, mode = "lines", showlegend = FALSE) %>% 
 layout(xaxis = list(title = "sample (360 Hz)"),
@@ -128,3 +133,4 @@ legend = list(orientation = 'h')) %>%
 add_markers(x = ~loc[!is.na(loc)], y = ~signal[!is.na(loc)], inherit = FALSE, name = "approximate location") %>% 
 add_markers(x = ~loc.sr[!is.na(loc.sr)], y = ~signal[!is.na(loc.sr)], inherit = FALSE,
 name = "corrected location")
+# --------------------------------------------------------------------------------------------------------
