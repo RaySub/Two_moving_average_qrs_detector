@@ -108,8 +108,9 @@ ma_detector <- function(signal, srate = 360L, lowcut_f1 = 8L, highcut_f2 = 21L, 
     swin1 <- slackness_win1 * srate
     swin2 <- slackness_win2 * srate
         loc2 <- sapply(loc[!is.na(loc)], srfun, sig = signal, t1 = swin1, t2 = swin2)
-    loc.sr <- as.integer(rep(NA, length(loc)))
+    loc.sr <- rep(NA, length(loc))
     loc.sr[order(loc.sr) %in% loc2] <- loc2
+    loc.sr <- as.integer(loc.sr)
     }
 
     dtb <- data.table(signal, signal_filt, signal_squared, mwa_qrs, mwa_beat, mwa_noise, block, block.clean, idx, loc, 
