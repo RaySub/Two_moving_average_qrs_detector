@@ -54,19 +54,17 @@ ma_detector <- function(signal, srate = 360L, lowcut_f1 = 8L, highcut_f2 = 21L, 
     # Because window2 is much larger than a qrs, too many running mean values are missing
     # The function below will substitute NA values with left-aligned and right-aligned  
     # running means at the left and right margins of the vector of means respectively.
-    na_fill <- function(mwa, signl, wind) {
-        left_qrs <- 1:(ceiling(wind / 2) - 1)
-        right_qrs <- (length(mwa) - floor(wind / 2) + 1):length(mwa)
-        mwa[left_qrs]   <- 
-        frollmean(signl, wind, align = "left")[left_qrs] 
-        mwa[right_qrs] <- 
-        frollmean(signl, wind, align = "right")[right_qrs]
+    ma_fill <- function(mwa, signl, wind) {
+        left_ma <- 1:(ceiling(wind / 2) - 1)
+        right_ma <- (length(mwa) - floor(wind / 2) + 1):length(mwa)
+        mwa[left_ma] <- frollmean(signl, wind, align = "left")[left_ma] 
+        mwa[right_ma] <- frollmean(signl, wind, align = "right")[right_ma]
         mwa 
     }
 
-    mwa_qrs <- na_fill(mwa = mwa_qrs, signl = signal_squared, wind = window1)
-    mwa_beat <- na_fill(mwa = mwa_beat, signl = signal_squared, wind = window2)
-    mwa_noise <- na_fill(mwa = mwa_noise, signl = signal_squared, wind = window3)
+    mwa_qrs <- ma_fill(mwa = mwa_qrs, signl = signal_squared, wind = window1)
+    mwa_beat <- ma_fill(mwa = mwa_beat, signl = signal_squared, wind = window2)
+    mwa_noise <- ma_fill(mwa = mwa_noise, signl = signal_squared, wind = window3)
 
     block <- data.table::fifelse(!is.na(mwa_beat) & mwa_qrs > (mwa_beat + mwa_noise * offset), 1, 0) 
     # the line above gives 0 if mwa_qrs <= mwa_beat
