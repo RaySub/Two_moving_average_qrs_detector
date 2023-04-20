@@ -137,7 +137,7 @@ points(signal_squared ~ loc, data = ad100_qrs0, col = "darkred")
 points(signal_squared ~ loc.sr, data = ad100_qrs0, col = "#036830", pch = 3)
 # -------------------------------------------------------------------------------------------------------
 
-# ==================== duynamic diagnostic plot =========================================================
+# ==================== dynamic diagnostic plot =========================================================
 library(plotly)
 plot_ly(ad100_qrs, x = ~idx, y = ~signal, type = "scatter", linetype = 1, mode = "lines", showlegend = FALSE) %>% 
 layout(xaxis = list(title = "sample (360 Hz)"),
