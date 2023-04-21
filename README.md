@@ -30,6 +30,7 @@ All recordings with annotations were tested: 123 for the chest strap and 106 for
   * With a 40 ms tolerance
    
 For a 250 Hz sampling rate, a tolerance of 40 ms corresponds to (40e-3) * 250 = 10 samples i.e. ref. annotation +/- 5 samples.
+The detection is said to be right shifted (Porr & Howell 2019) but our sample plots # show some cases of left-shifted detection. So, we used an tolerance interval which is symmetrical around the reference annotation.
 
 |   task    |  channel   | truepos | falsepos | falseneg |  TPR   |   F1   |
 |:---------:|:----------:|:-------:|:--------:|:--------:|:------:|:------:|
