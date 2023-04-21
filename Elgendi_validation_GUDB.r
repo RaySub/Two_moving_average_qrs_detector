@@ -1,4 +1,7 @@
 
+# Copyright (C) 2023 Philippe Liège
+# GPL GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+
 # Validation against the Glasgow University Database (GUDB)
 # all recordings with annotations were tested: 123 for the chest strap and 
 # 106 for the loose cable setup.
