@@ -77,10 +77,7 @@ The detection is said to be right shifted (Porr & Howell 2019) but our sample pl
 |  walking  |   cable    | 0.9826  | 0.01736  |  0.01415  | 0.9857 | 0.9842 |
 |  walking  | cheststrap | 0.9676  | 0.03237  |  0.03139  | 0.9686 | 0.9681 |
 
-![foo *bar*]
-
-[foo *bar*]: 2ma_detection_1.png "Windows, blocks & annotations"
-    
+  
     > library(rbenchmark)
     > benchmark(
     >     dtbr <- apply(sample_list, 1, valid_fn, freq_sampling = 250L,  slred = TRUE)
@@ -88,6 +85,14 @@ The detection is said to be right shifted (Porr & Howell 2019) but our sample pl
     > test replications  elapsed  relative  user.self  sys.self  user.child  sys.child
     >             100   776.02         1     299.06     27.72          NA         NA
     
-    
+
+![plot1 *bar*]
+
+[plot1 *bar*]: 2ma_detection_1.png "Windows, blocks & annotations"
+
+
+![plot2 *bar*]
+
+[plot2 *bar*]: 2ma_detection_2.png "Windows, blocks & annotations"
 
     
