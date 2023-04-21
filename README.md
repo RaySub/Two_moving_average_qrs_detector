@@ -75,3 +75,10 @@ For a 250 Hz sampling rate, a tolerance of 40 ms corresponds to (40e-3) * 250 = 
 |  sitting  | cheststrap |  0.968  |  0.032   |  0.03219  | 0.9678 | 0.9679 |
 |  walking  |   cable    | 0.9826  | 0.01736  |  0.01415  | 0.9857 | 0.9842 |
 |  walking  | cheststrap | 0.9676  | 0.03237  |  0.03139  | 0.9686 | 0.9681 |
+
+    > library(rbenchmark)
+> benchmark(
+     dtbr <- apply(sample_list, 1, valid_fn, freq_sampling = 250L,  slred = TRUE)
+ )
+ test replications  elapsed  relative  user.self  sys.self  user.child  sys.child
+               100   776.02         1     299.06     27.72          NA         NA
