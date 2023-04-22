@@ -12,7 +12,7 @@
 # Validation against the Glasgow University Database (GUDB)
 All recordings with annotations were tested: 123 for the chest strap and 106 for the loose cable setup.
 
-* With no slackness correction
+* Without slackness correction
   * With zero tolerance
 
 |   task    |  channel   | truepos | falsepos | falseneg |  TPR   |   F1   |
@@ -27,7 +27,8 @@ All recordings with annotations were tested: 123 for the chest strap and 106 for
 |  sitting  | cheststrap | 0.3925  |  0.6075  |  0.6078  | 0.3922 | 0.3924 |
 |  walking  |   cable    | 0.2902  |  0.7098  |  0.7092  | 0.2903 | 0.2902 |
 |  walking  | cheststrap | 0.3503  |  0.6497  |  0.6495  | 0.3504 | 0.3504 |
-  * With a 40 ms tolerance
+
+  * Using a 40 ms tolerance window
 
 > According to Porr & Howell, the default tolerance is a tenth of the sampling rate as may be read in the Physionet comparison algorithms. 
 For a 250 Hz sampling rate, a tolerance of 40 ms corresponds to (40e-3) * 250 = 10 samples.
@@ -64,7 +65,7 @@ The WFBD application guide (WAG.pdf) says that the match window specifies the ma
 |  walking  |   cable    | 0.9819  | 0.01807  |  0.01486  | 0.985  | 0.9834 |
 |  walking  | cheststrap | 0.9668  | 0.03321  |  0.03223  | 0.9678 | 0.9673 |
 
-  * With a 40 ms tolerance
+  * Using a 40 ms tolerance window
 
 |   task    |  channel   | truepos | falsepos | falseneg  |  TPR   |   F1   |
 |:---------:|:----------:|:-------:|:--------:|:---------:|:------:|:------:|
