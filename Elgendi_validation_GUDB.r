@@ -91,14 +91,18 @@ pander::pandoc.table(calc_exp[, lapply(.SD, mean), .SDcols = mycols, by = c("tas
 
 # According to Porr & Howell, the default tolerance is a tenth of the 
 # sampling rate as may be read in the Physionet comparison algorithms. 
-# a tolerance of 40ms corresponds to (10e-2)*250 = 10 samples i.e. ref. annotation +/- 5 samples.
+# a tolerance of 40ms corresponds to (10e-2)*250 = 10 samples
 # The detection is said to be right shifted (Porr & Howell 2019) but our sample plots
 # show some cases of left-shifted detection. So, we used an tolerance interval
 # which is symmetrical around the reference annotation.
+# The WFBD application guide (WAG.pdf) says that the match window specifies 
+# the maximum absolute difference in annotation times that is permitted for matching annotations.
+# Its default value in the bxb function is 0.15 seconds which is way too large.
+                              
 expected <- do.call(rbind, lapply(dtbr, function(x) x[[1]]))
 calc <- do.call(rbind, lapply(dtbr, function(x) x[[2]]))
 
-tolr <- 5 # tolerance expressed as the nb of samples each side of the reference annotation
+tolr <- 10 # tolerance expressed as the absolute difference to the reference annotation
 calc[, `:=`(start = loc - tolr, end = loc + tolr)]
 setkey(calc, task, channel, subj, start, end)
 expected[, `:=`(start = annotation, end = annotation)]
@@ -158,7 +162,7 @@ pander::pandoc.table(calc_exp[, lapply(.SD, mean), .SDcols = mycols, by = c("tas
 expected <- do.call(rbind, lapply(dtbr, function(x) x[[1]]))
 calc <- do.call(rbind, lapply(dtbr, function(x) x[[2]]))
 
-tolr <- 5 # tolerance expressed as the nb of samples each side of the reference annotation
+tolr <- 10 # tolerance expressed as the absolute difference to the reference annotation
 calc[, `:=`(start = loc - tolr, end = loc + tolr)]
 setkey(calc, task, channel, subj, start, end)
 expected[, `:=`(start = annotation, end = annotation)]
