@@ -29,7 +29,7 @@ All recordings with annotations were tested: 123 for the chest strap and 106 for
 |  walking  | cheststrap | 0.3503  |  0.6497  |  0.6495  | 0.3504 | 0.3504 |
   * With a 40 ms tolerance
 
-According to Porr & Howell, the default tolerance is a tenth of the sampling rate as may be read in the Physionet comparison algorithms. 
+> According to Porr & Howell, the default tolerance is a tenth of the sampling rate as may be read in the Physionet comparison algorithms. 
 For a 250 Hz sampling rate, a tolerance of 40 ms corresponds to (40e-3) * 250 = 10 samples.
 The detection is said to be right shifted (Porr & Howell 2019) but our sample plots show some cases of left-shifted detection. So, we used a tolerance interval which is symmetrical around the reference annotation.
 The WFBD application guide (WAG.pdf) says that the match window specifies the maximum absolute difference in annotation times that is permitted for matching annotations. Its default value used by the bxb function is 0.15 seconds which is way too large.
