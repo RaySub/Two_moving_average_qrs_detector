@@ -84,7 +84,7 @@ ma_detector <- function(signal, srate = 360L, lowcut_f1 = 8L, highcut_f2 = 21L, 
     # peak height on the squared scale
     height <- signal_squared
     height[!is.na(block.clean)] <- unlist(tapply(height, block.clean, 
-        function(x) fifelse(x == max(x), max(x), NA)))
+        function(x) fifelse(x == max(x), max(x), as.numeric(NA))))
     height[is.na(block.clean)] <- NA
     # peak location
     loc <- which(!is.na(height))
