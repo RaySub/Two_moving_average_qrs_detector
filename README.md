@@ -28,22 +28,24 @@ All recordings with annotations were tested: 123 for the chest strap and 106 for
 |  walking  |   cable    | 0.2902  |  0.7098  |  0.7092  | 0.2903 | 0.2902 |
 |  walking  | cheststrap | 0.3503  |  0.6497  |  0.6495  | 0.3504 | 0.3504 |
   * With a 40 ms tolerance
-   
-For a 250 Hz sampling rate, a tolerance of 40 ms corresponds to (40e-3) * 250 = 10 samples i.e. ref. annotation +/- 5 samples.
-The detection is said to be right shifted (Porr & Howell 2019) but our sample plots show some cases of left-shifted detection. So, we used a tolerance interval which is symmetrical around the reference annotation.
 
-|   task    |  channel   | truepos | falsepos | falseneg |  TPR   |   F1   |
-|:---------:|:----------:|:-------:|:--------:|:--------:|:------:|:------:|
-| hand_bike |   cable    | 0.9165  | 0.08349  | 0.08042  | 0.9196 | 0.918  |
-| hand_bike | cheststrap | 0.7222  |  0.2778  |  0.2704  | 0.7284 | 0.7252 |
-|  jogging  |   cable    | 0.8731  |  0.1269  |  0.1409  | 0.8624 | 0.8676 |
-|  jogging  | cheststrap |  0.646  |  0.354   |  0.3651  | 0.637  | 0.6414 |
-|   maths   |   cable    | 0.9156  | 0.08439  | 0.08264  | 0.9174 | 0.9165 |
-|   maths   | cheststrap | 0.7607  |  0.2393  |  0.239   | 0.761  | 0.7609 |
-|  sitting  |   cable    | 0.8797  |  0.1203  |   0.12   |  0.88  | 0.8799 |
-|  sitting  | cheststrap | 0.7417  |  0.2583  |  0.2585  | 0.7415 | 0.7416 |
-|  walking  |   cable    | 0.8725  |  0.1275  |  0.1245  | 0.8755 | 0.874  |
-|  walking  | cheststrap | 0.7221  |  0.2779  |  0.2774  | 0.7225 | 0.7223 |
+According to Porr & Howell, the default tolerance is a tenth of the sampling rate as may be read in the Physionet comparison algorithms. 
+For a 250 Hz sampling rate, a tolerance of 40 ms corresponds to (40e-3) * 250 = 10 samples.
+The detection is said to be right shifted (Porr & Howell 2019) but our sample plots show some cases of left-shifted detection. So, we used a tolerance interval which is symmetrical around the reference annotation.
+The WFBD application guide (WAG.pdf) says that the match window specifies the maximum absolute difference in annotation times that is permitted for matching annotations. Its default value used by the bxb function is 0.15 seconds which is way too large.
+
+|   task    |  channel   | truepos | falsepos | falseneg  |  TPR   |   F1   |
+|:---------:|:----------:|:-------:|:--------:|:---------:|:------:|:------:|
+| hand_bike |   cable    | 0.9931  |  0.0069  |  0.00382  | 0.9962 | 0.9946 |
+| hand_bike | cheststrap |  0.95   | 0.04997  |  0.03833  | 0.9615 | 0.9556 |
+|  jogging  |   cable    | 0.9769  |  0.0231  |  0.04152  | 0.9607 | 0.9686 |
+|  jogging  | cheststrap | 0.9532  | 0.04677  |  0.05882  | 0.9427 | 0.9478 |
+|   maths   |   cable    | 0.9981  | 0.00193  | 0.0003936 | 0.9996 | 0.9988 |
+|   maths   | cheststrap | 0.9857  | 0.01434  |  0.01405  | 0.9859 | 0.9858 |
+|  sitting  |   cable    | 0.9989  | 0.00106  |     0     |   1    | 0.9995 |
+|  sitting  | cheststrap | 0.9859  | 0.01415  |  0.01407  | 0.9859 | 0.9859 |
+|  walking  |   cable    | 0.9942  | 0.005772 | 0.002409  | 0.9976 | 0.9959 |
+|  walking  | cheststrap | 0.9709  | 0.02913  |  0.02814  | 0.9719 | 0.9714 |
 
 * Using slackness correction
 
@@ -63,18 +65,18 @@ The detection is said to be right shifted (Porr & Howell 2019) but our sample pl
 |  walking  | cheststrap | 0.9668  | 0.03321  |  0.03223  | 0.9678 | 0.9673 |
 
   * With a 40 ms tolerance
-   
+
 |   task    |  channel   | truepos | falsepos | falseneg  |  TPR   |   F1   |
 |:---------:|:----------:|:-------:|:--------:|:---------:|:------:|:------:|
-| hand_bike |   cable    | 0.9904  | 0.009567 | 0.006487  | 0.9935 | 0.992  |
-| hand_bike | cheststrap | 0.9731  |  0.0269  |  0.01565  | 0.9838 | 0.9783 |
-|  jogging  |   cable    | 0.9582  | 0.04177  |  0.05935  | 0.9434 | 0.9506 |
-|  jogging  | cheststrap | 0.9677  | 0.03229  |  0.0444   | 0.9571 | 0.9623 |
-|   maths   |   cable    | 0.9979  | 0.002148 | 0.0006106 | 0.9994 | 0.9986 |
+| hand_bike |   cable    | 0.9918  | 0.008211 |  0.00513  | 0.9949 | 0.9933 |
+| hand_bike | cheststrap | 0.9734  | 0.02663  |  0.01538  | 0.9841 | 0.9786 |
+|  jogging  |   cable    |  0.961  | 0.03898  |  0.05668  | 0.946  | 0.9533 |
+|  jogging  | cheststrap | 0.9691  | 0.03094  |  0.04309  | 0.9584 | 0.9636 |
+|   maths   |   cable    | 0.9981  | 0.00193  | 0.0003936 | 0.9996 | 0.9988 |
 |   maths   | cheststrap | 0.9662  | 0.03375  |  0.03347  | 0.9665 | 0.9664 |
 |  sitting  |   cable    | 0.9989  | 0.00106  |     0     |   1    | 0.9995 |
 |  sitting  | cheststrap |  0.968  |  0.032   |  0.03219  | 0.9678 | 0.9679 |
-|  walking  |   cable    | 0.9826  | 0.01736  |  0.01415  | 0.9857 | 0.9842 |
+|  walking  |   cable    | 0.9837  | 0.01634  |  0.01312  | 0.9867 | 0.9852 |
 |  walking  | cheststrap | 0.9676  | 0.03237  |  0.03139  | 0.9686 | 0.9681 |
 
   
@@ -86,13 +88,13 @@ The detection is said to be right shifted (Porr & Howell 2019) but our sample pl
     >             100   776.02         1     299.06     27.72          NA         NA
     
 
-![plot1 *bar*]
+![plot1 *rightend*]
 
-[plot1 *bar*]: 2ma_detection_1.png "Windows, blocks & annotations"
+[plot1 *rightend*]: 2ma_detection_1.png "Windows, blocks & annotations"
 
 
-![plot2 *bar*]
+![plot2 *detail*]
 
-[plot2 *bar*]: 2ma_detection_2.png "Windows, blocks & annotations"
+[plot2 *detail*]: 2ma_detection_2.png "Windows, blocks & annotations"
 
     
