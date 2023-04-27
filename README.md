@@ -14,7 +14,7 @@
 * qrs_detector_2ma.r and qrs_detector_2ma_mod.r both return a data table containing the input signal, all intermediate calculations including filtered and squared signal, windows and blocks along with detected qrs (loc).
 * One additional column (loc_sr) is reported if the user needs slackness reduction.
 * The modified version (qrs_detector_2ma_mod.r) attempts to detect the very first and very last beats which are missed by design in the original version. The implementation of slackness reduction for these marginal peaks was found effective in most cases but though I am not saying it is 100% safe. 
-* Packages gsignal (butter() & filtfilt()) and data.table (fread(), frollingmeans() & foverlaps() + faster computation time) are required.
+* Packages gsignal (butter() & filtfilt()) and data.table (fread(), data.table(), frollingmeans() & foverlaps() + faster computation time) are required.
 * No for-loops are being used.
 
 # Validation against the Glasgow University Database (GUDB)
