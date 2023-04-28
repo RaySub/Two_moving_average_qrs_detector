@@ -88,7 +88,39 @@ The WFBD application guide (WAG.pdf) says that the match window specifies the ma
 |  walking  |   cable    | 0.9869 | 0.9852 |
 |  walking  | cheststrap | 0.9686 | 0.9681 |
 
-  
+
+* Compare with the detect_rpeaks() function from the rsleep package
+
+  * With zero tolerance
+
+|   task    |  channel   |   TPR   |   F1    |
+|:---------:|:----------:|:-------:|:-------:|
+| hand_bike |   cable    | 0.1519  | 0.1516  |
+| hand_bike | cheststrap | 0.2479  | 0.2444  |
+|  jogging  |   cable    | 0.06779 | 0.07407 |
+|  jogging  | cheststrap | 0.1936  | 0.1999  |
+|   maths   |   cable    | 0.1692  | 0.1691  |
+|   maths   | cheststrap | 0.3334  | 0.3272  |
+|  sitting  |   cable    | 0.1922  | 0.1923  |
+|  sitting  | cheststrap |  0.371  | 0.3538  |
+|  walking  |   cable    | 0.07615 | 0.07591 |
+|  walking  | cheststrap | 0.3008  | 0.2974  |
+
+    * Using a 40 ms tolerance window
+ 
+ |   task    |  channel   |  TPR   |   F1   |
+|:---------:|:----------:|:------:|:------:|
+| hand_bike |   cable    | 0.9903 | 0.9905 |
+| hand_bike | cheststrap | 0.9787 | 0.9552 |
+|  jogging  |   cable    | 0.8355 | 0.8799 |
+|  jogging  | cheststrap | 0.8662 | 0.9047 |
+|   maths   |   cable    | 0.9989 | 0.9985 |
+|   maths   | cheststrap | 0.9852 | 0.9662 |
+|  sitting  |   cable    | 0.9981 | 0.9985 |
+|  sitting  | cheststrap | 0.9952 | 0.9539 |
+|  walking  |   cable    | 0.9897 |  0.99  |
+|  walking  | cheststrap | 0.9933 | 0.9715 |
+
     > library(rbenchmark)
     > benchmark(
     >     dtbr <- apply(sample_list, 1, valid_fn, freq_sampling = 250L,  slred = TRUE)
