@@ -7,6 +7,7 @@
 
 require("pander")
 source("qrs_detector_2ma_mod.r")
+library(rsleep)
 
 task <- c("hand_bike", "jogging", "maths", "sitting", "walking")
 
@@ -46,10 +47,17 @@ if (file.exists(ecg_path) && !is.null(dt_annot)) {
     dt_qrs[!is.na(loc), .(loc, n_sample)])
     dt_loc[, truepos := loc %in% dt_annot[, annotation]][, falsepos := as.logical(1 - truepos)]
     dt_annot[, falseneg := !(annotation %in% dt_loc[, loc])]
+    # add rsleep results
+    pantom <- rsleep::detect_rpeaks(signal = 1000 * ecg_dat[[col_no]], sRate = freq_sampling,
+    return_index = TRUE)
+    dt_pantom <- data.table(task = x["task"], subj = x["subj"], channel = x["channel"], 
+    loc = pantom, n_sample = nrow(ecg_dat))
+    dt_pantom[, truepos := loc %in% dt_annot[, annotation]][, falsepos := as.logical(1 - truepos)]
+    dt_annot[, fn_pantom := !(annotation %in% dt_pantom[, loc])]
 } else {
-    dt_qrs <- dt_loc <- dt_annot <- NULL
+    dt_qrs <- dt_loc <- dt_annot <- dt_pantom <- NULL
 }
-list(dt_annot, dt_loc, dt_qrs)
+list(dt_annot, dt_loc, dt_qrs, dt_pantom)
 }
 
 # library(rbenchmark)
@@ -125,7 +133,7 @@ tpfn <- merge(tp, fn)
 # TPR stands for "true positive rate", syn. recall, sensitivity
 tpfn[, trueneg := n_sample - (truepos + falsepos + falseneg)]
 tpfn[, `:=`(TPR = truepos / (truepos + falseneg), F1 = (2 * truepos) / (2 * truepos + falsepos + falseneg))]
-tpfn <- tpfn[, c(1:3, 7, 4, 8, 5:6, 10:9, 11:12)]
+tpfn <- tpfn[, c(1:3, 4, 8, 5:7, 10:9, 11:12)]
 tpfn
 mycols <- names(tpfn[,TPR:F1])
 # simplermarkdown::md_table(tpfn[, lapply(.SD, mean), .SDcols = mycols, by = c("task", "channel")])
@@ -191,7 +199,68 @@ tpfn <- merge(tp, fn)
 # TPR stands for "true positive rate", syn. recall, sensitivity
 tpfn[, trueneg := n_sample - (truepos + falsepos + falseneg)]
 tpfn[, `:=`(TPR = truepos / (truepos + falseneg), F1 = (2 * truepos) / (2 * truepos + falsepos + falseneg))]
-tpfn <- tpfn[, c(1:3, 7, 4, 8, 5:6, 10:9, 11:12)]
+tpfn <- tpfn[, c(1:3, 4, 8, 5:7, 10:9, 11:12)]
+tpfn
+mycols <- names(tpfn[,TPR:F1])
+# simplermarkdown::md_table(tpfn[, lapply(.SD, mean), .SDcols = mycols, by = c("task", "channel")])
+pander::pandoc.table(tpfn[, lapply(.SD, mean), .SDcols = mycols, by = c("task", "channel")], 
+style = "rmarkdown", split.tables = 200)
+# ---------------------------------------------------------------
+
+
+############## compare with rsleep::detect_rpeaks ##############################
+
+#---------------- validation using zero tolerance ----------------------------
+expected <- do.call(rbind, lapply(dtbr, function(x) x[[1]]))
+ptom <- do.call(rbind, lapply(dtbr, function(x) x[[4]]))
+
+V <- copy(ptom)
+V <- V [expected, on = .(task, channel, subj, loc == annotation), loc := NA]
+V <- V[, .(truepos = sum(is.na(loc)), falsepos = sum(!is.na(loc)), n_sample = n_sample[1], 
+n_detected = .N), by = .(task, channel, subj)]
+
+W <- expected[ptom, on = .(task, channel, subj, annotation == loc), annotation := NA]
+# falseneg = sum(fn_pantom) is equivalent to falseneg = sum(!is.na(annotation))
+W <- W[, .(falseneg = sum(!is.na(annotation)), n_expected = .N), by = .(task, channel, subj)]
+
+calc_exp <- merge(V, W, by = c("task", "channel", "subj"), all = TRUE)
+# true positives are named precision in this context
+# TPR stands for "true positive rate", syn. recall, sensitivity
+calc_exp[, `:=`(trueneg = n_sample - (truepos + falsepos + falseneg), 
+TPR = truepos / (truepos + falseneg), F1 = (2 * truepos) / (2 * truepos + falsepos + falseneg))]
+calc_exp <- calc_exp[, c(1:3, 6:7, 9, 4:5, 10, 8, 11:12)]
+calc_exp 
+mycols <- names(calc_exp[, TPR:F1])
+# calc_exp[, lapply(.SD, mean), .SDcols = mycols, by = c("task", "channel")]
+pander::pandoc.table(calc_exp[, lapply(.SD, mean), .SDcols = mycols, by = c("task", "channel")], style = "rmarkdown")
+# ---------------------------------------------------------------
+
+#----------------allowing a tolerance tolr --------------------------
+
+expected <- do.call(rbind, lapply(dtbr, function(x) x[[1]]))
+ptom <- do.call(rbind, lapply(dtbr, function(x) x[[4]]))
+
+tolr <- 10 # tolerance expressed as the absolute difference to the reference annotation
+ptom[, `:=`(start = loc - tolr, end = loc + tolr)]
+setkey(ptom, task, channel, subj, start, end)
+expected[, `:=`(start = annotation, end = annotation)]
+setkey(expected, task, channel, subj, start, end)
+# calc in expected
+expected_calc <- foverlaps(expected, ptom, type = "within")
+# get false negatives
+fn <- expected_calc[, .(n_expected = .N, falseneg = sum(is.na(loc))), 
+by = .(task, channel, subj)]
+# expected in calc
+calc_expected <- foverlaps(ptom, expected, type = "any")
+# get true and false positives
+tp <- calc_expected[, .(n_sample = unique(n_sample), n_detected = .N, truepos = sum(!is.na(annotation)), 
+falsepos = sum(is.na(annotation))), by = .(task, channel, subj)]
+tpfn <- merge(tp, fn)
+# true positives are named preciion in this context
+# TPR stands for "true positive rate", syn. recall, sensitivity
+tpfn[, trueneg := n_sample - (truepos + falsepos + falseneg)]
+tpfn[, `:=`(TPR = truepos / (truepos + falseneg), F1 = (2 * truepos) / (2 * truepos + falsepos + falseneg))]
+tpfn <- tpfn[, c(1:3, 4, 8, 5:7, 10:9, 11:12)]
 tpfn
 mycols <- names(tpfn[,TPR:F1])
 # simplermarkdown::md_table(tpfn[, lapply(.SD, mean), .SDcols = mycols, by = c("task", "channel")])
