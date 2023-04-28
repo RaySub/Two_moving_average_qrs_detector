@@ -106,9 +106,9 @@ The WFBD application guide (WAG.pdf) says that the match window specifies the ma
 |  walking  |   cable    | 0.07615 | 0.07591 |
 |  walking  | cheststrap | 0.3008  | 0.2974  |
 
-    * Using a 40 ms tolerance window
+  * Using a 40 ms tolerance window
  
- |   task    |  channel   |  TPR   |   F1   |
+|   task    |  channel   |  TPR   |   F1   |
 |:---------:|:----------:|:------:|:------:|
 | hand_bike |   cable    | 0.9903 | 0.9905 |
 | hand_bike | cheststrap | 0.9787 | 0.9552 |
