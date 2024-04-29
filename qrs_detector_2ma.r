@@ -137,7 +137,7 @@ lines(mwa_qrs ~ idx, data = ad100_qrs0, type = "l", col = 2)
 lines(mwa_beat ~ idx, data = ad100_qrs0, type = "l", col = 3) 
 lines(I(0.2 * block.clean) ~ idx, data = ad100_qrs0, type = "l", col = 5) 
 points(signal_squared ~ loc, data = ad100_qrs0, col = "darkred")
-points(signal_squared ~ loc.sr, data = ad100_qrs0, col = "#036830", pch = 3)
+points(signal_squared ~ loc_sr, data = ad100_qrs0, col = "#036830", pch = 3)
 # -------------------------------------------------------------------------------------------------------
 
 # ==================== dynamic diagnostic plot =========================================================
