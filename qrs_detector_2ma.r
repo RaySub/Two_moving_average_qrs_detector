@@ -147,7 +147,7 @@ layout(xaxis = list(title = "sample (360 Hz)"),
 yaxis = list(title = "unfiltered signal (mV)"),
 legend = list(orientation = 'h')) %>%
 add_markers(x = ~loc[!is.na(loc)], y = ~signal[!is.na(loc)], inherit = FALSE, name = "approximate location") %>% 
-add_markers(x = ~loc.sr[!is.na(loc.sr)], y = ~signal[!is.na(loc.sr)], inherit = FALSE,
+add_markers(x = ~loc_sr[!is.na(loc_sr)], y = ~signal[!is.na(loc_sr)], inherit = FALSE,
 name = "corrected location")
 # --------------------------------------------------------------------------------------------------------
 
